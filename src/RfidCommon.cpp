@@ -78,7 +78,7 @@ void Rfid_PreferenceLookupHandler(void) {
 				Cmd_Action(_playMode);
 			} else {
 	#ifdef DONT_ACCEPT_SAME_RFID_TWICE_ENABLE
-				if (strncmp(gCurrentRfidTagId, gOldRfidTagId, 12) == 0) {
+				if (strncmp(gCurrentRfidTagId, gOldRfidTagId, 12) == 0 && !gPlayProperties.rfidStillToRecover) {
 					Log_Printf(LOGLEVEL_ERROR, dontAccepctSameRfid, gCurrentRfidTagId);
 					// System_IndicateError(); // Enable to have shown error @neopixel every time
 					return;

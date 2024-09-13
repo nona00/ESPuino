@@ -1159,8 +1159,8 @@ void AudioPlayer_TrackQueueDispatcher(const char *_itemToPlay, const uint32_t _l
 	if (!error) {
 		gPlayProperties.playMode = _playMode;
 #ifdef PLAY_LAST_RFID_AFTER_REBOOT
-		// At this point rfid recovering is supposed to be finished
-		gPlayProperties.rfidToRecover = false;
+		// At this point rfid recovering is supposed to be finished/successful
+		gPlayProperties.rfidStillToRecover = false;
 #endif
 		xQueueSend(gTrackQueue, &list, 0);
 		return;

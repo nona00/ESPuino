@@ -107,14 +107,20 @@ void recoverLastRfidPlayedFromNvs(bool force) {
 			recoverLastRfid = false;
 			return;
 		}
-		recoverLastRfid = false;
+
+		if (recoverLastRfid) {
+			recoverLastRfid = false;
+	#ifdef PLAY_LAST_RFID_AFTER_REBOOT
+			gPlayProperties.rfidStillToRecover = !force;
+	#endif
+		}
+
 		String lastRfidPlayed = gPrefsSettings.getString("lastRfid", "-1");
 		if (!lastRfidPlayed.compareTo("-1")) {
 			Log_Println(unableToRestoreLastRfidFromNVS, LOGLEVEL_INFO);
-			gPlayProperties.rfidToRecover = false;
+			gPlayProperties.rfidStillToRecover = false;
 		} else {
 			xQueueSend(gRfidCardQueue, lastRfidPlayed.c_str(), 0);
-			gPlayProperties.rfidToRecover = !force;
 			Log_Printf(LOGLEVEL_INFO, restoredLastRfidFromNVS, lastRfidPlayed.c_str());
 		}
 	}
