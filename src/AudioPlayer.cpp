@@ -744,7 +744,6 @@ void AudioPlayer_Task(void *parameter) {
 			if (gPlayProperties.playMode == WEBSTREAM || (gPlayProperties.playMode == LOCAL_M3U && gPlayProperties.isWebstream)) { // Webstream
 				audioReturnCode = audio->connecttohost(gPlayProperties.playlist->at(gPlayProperties.currentTrackNumber));
 				gPlayProperties.playlistFinished = false;
-				gTriedToConnectToHost = true;
 			} else if (gPlayProperties.playMode != WEBSTREAM && !gPlayProperties.isWebstream) {
 				// Files from SD
 				if (!gFSystem.exists(gPlayProperties.playlist->at(gPlayProperties.currentTrackNumber))) { // Check first if file/folder exists
@@ -1159,6 +1158,10 @@ void AudioPlayer_TrackQueueDispatcher(const char *_itemToPlay, const uint32_t _l
 
 	if (!error) {
 		gPlayProperties.playMode = _playMode;
+#ifdef PLAY_LAST_RFID_AFTER_REBOOT
+		// At this point rfid recovering is supposed to be finished
+		gPlayProperties.rfidToRecover = false;
+#endif
 		xQueueSend(gTrackQueue, &list, 0);
 		return;
 	}

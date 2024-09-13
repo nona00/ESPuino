@@ -30,9 +30,6 @@
 
 #include <Wire.h>
 
-bool gPlayLastRfIdWhenWiFiConnected = false;
-bool gTriedToConnectToHost = false;
-
 static constexpr const char *logo = R"literal(
  _____   ____    ____            _
 | ____| / ___|  |  _ \   _   _  (_)  _ __     ___
@@ -103,6 +100,7 @@ void recoverBootCountFromNvs(void) {
 }
 
 // Get last RFID-tag applied from NVS
+// Mode "force" is used via Wlan.cpp, if webradio rfid needs to be recovered but wifi is not yet ready
 void recoverLastRfidPlayedFromNvs(bool force) {
 	if (recoverLastRfid || force) {
 		if (System_GetOperationMode() == OPMODE_BLUETOOTH_SINK) { // Don't recover if BT-mode is desired
@@ -113,9 +111,10 @@ void recoverLastRfidPlayedFromNvs(bool force) {
 		String lastRfidPlayed = gPrefsSettings.getString("lastRfid", "-1");
 		if (!lastRfidPlayed.compareTo("-1")) {
 			Log_Println(unableToRestoreLastRfidFromNVS, LOGLEVEL_INFO);
+			gPlayProperties.rfidToRecover = false;
 		} else {
 			xQueueSend(gRfidCardQueue, lastRfidPlayed.c_str(), 0);
-			gPlayLastRfIdWhenWiFiConnected = !force;
+			gPlayProperties.rfidToRecover = !force;
 			Log_Printf(LOGLEVEL_INFO, restoredLastRfidFromNVS, lastRfidPlayed.c_str());
 		}
 	}

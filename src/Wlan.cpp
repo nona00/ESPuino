@@ -490,9 +490,11 @@ void handleWifiStateConnectionSuccess() {
 	dnsServer = nullptr;
 
 #ifdef PLAY_LAST_RFID_AFTER_REBOOT
-	if (gPlayLastRfIdWhenWiFiConnected && gTriedToConnectToHost) {
-		gPlayLastRfIdWhenWiFiConnected = false;
-		recoverLastRfidPlayedFromNvs(true);
+	if (gPlayProperties.rfidToRecover) {
+		gPlayProperties.rfidToRecover = false;
+		if (millis() <= 15000) { // Don't try to recover after 15s or later. ToDo: needs to be added to webinterface as parameter
+			recoverLastRfidPlayedFromNvs(true);
+		}
 	}
 #endif
 
