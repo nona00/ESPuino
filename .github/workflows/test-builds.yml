@@ -34,7 +34,7 @@ jobs:
       - name: Cache pip
         uses: actions/cache@v3
         with:
-          path: ~/.cache/pip
+          path: ~/.cache/pip ~/.platformio/.cache
           key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
           restore-keys: |
             ${{ runner.os }}-pip-
