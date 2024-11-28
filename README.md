@@ -83,7 +83,7 @@ run ESPuino properly.
   Step-by-step-manual is available
   [here](https://randomnerdtutorials.com/vs-code-platformio-ide-esp32-esp8266-arduino/.)
 - Install [Git](https://git-scm.com/downloads) and make a copy ("clone") of my repository to your local
-  computer using `git clone https://github.com/biologist79/ESPuino.git`. Using Git you can keep your
+  computer using `git clone https://github.com/biologist79/ESPuino`. Using Git you can keep your
   local repository easily up to date without doing copy'n'paste. To keep it up to date run `git pull
   origin master`. Further infos
   [here](https://stackoverflow.com/questions/1443210/updating-a-local-repository-with-changes-from-a-github-repository)
